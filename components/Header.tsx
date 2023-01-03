@@ -3,6 +3,8 @@ import { navLink } from '../constants/menu';
 import { HiOutlineSearch, HiOutlineBell } from 'react-icons/hi';
 import { TbFaceId } from 'react-icons/tb';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,8 +18,8 @@ const Header = () => {
   return (
     <header className={`${isScrolled && 'bg-[#141414]/70'} h-[60px]`}>
       <div className='flex items-center space-x-2 md:space-x-10'>
-        <img
-          src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1280px-Netflix_2015_logo.svg.png'
+        <Image
+          src='/assets/logo.png'
           alt=''
           width={100}
           height={100}
