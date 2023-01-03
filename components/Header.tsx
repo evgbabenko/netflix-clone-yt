@@ -4,10 +4,12 @@ import { HiOutlineSearch, HiOutlineBell } from 'react-icons/hi';
 import { TbFaceId } from 'react-icons/tb';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import useAuth from '../hooks/useAuth';
 
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+   const { logout } = useAuth();
   useEffect(() => {
     const handleScroll = () =>
       window.scrollY > 0 ? setIsScrolled(true) : setIsScrolled(false);
@@ -19,7 +21,7 @@ const Header = () => {
     <header className={`${isScrolled && 'bg-[#141414]/70'} h-[60px]`}>
       <div className='flex items-center space-x-2 md:space-x-10'>
         <Image
-          src='/assets/logo.png'
+          src={require('../assets/logo.png')}
           alt=''
           width={100}
           height={100}
@@ -42,7 +44,9 @@ const Header = () => {
         <p className='hidden lg:inline'>Kids</p>
         <HiOutlineBell className='h-6 w-6' />
         <Link href='/account'>
-          <TbFaceId className='h-6 w-6 bg-blue-300 rounded-md' />
+          <TbFaceId
+            onClick={logout}
+            className='h-6 w-6 bg-blue-300 rounded-md' />
         </Link>
       </div>
     </header>
