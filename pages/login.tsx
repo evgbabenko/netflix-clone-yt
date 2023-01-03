@@ -2,7 +2,7 @@ import { signInAnonymously } from 'firebase/auth';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import useAuth from '../hooks/useAuth';
 
 interface Inputs {
