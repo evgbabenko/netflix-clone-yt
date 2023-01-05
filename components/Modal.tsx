@@ -1,6 +1,7 @@
 import MuiModal from '@mui/material/Modal';
 import { modalState, movieState } from '../atoms/modalAtom';
 import { useRecoilState } from 'recoil';
+import { langs } from '../constants/lang';
 
 import { useEffect, useState } from 'react';
 import { Element, Genre, Movie } from '../typings';
@@ -87,12 +88,17 @@ const Modal = () => {
         </button>
 
         {/* Movie player */}
-        <div className='relative pt-[54.5%]'>
+        <div className='relative pt-[56.25%]'>
           <ReactPlayer
             url={`https://youtube.com/watch?v=${trailer}`}
             width='100%'
             height='100%'
-            style={{ position: 'absolute', top: 0, left: 0 }}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              background: '#181818',
+            }}
             playing
             muted={muted}
           />
@@ -121,18 +127,43 @@ const Modal = () => {
           </div>
         </div>
         {/* Bottom section - description, etc.*/}
-        <div>
-          <div>
+        <div className='flex flex-col space-x-16 rounded-b-md bg-[#181818] px-10 py-8'>
+          <div className='space-y-6 text-lg'>
             <div className='flex items-center space-x-2 text-sm'>
-              <p className='font-semibold text-green-400'>Збіг {movie!.vote_average *10}%</p>
-              <p className='font-light'>{movie?.release_date || movie?.first_air_date}</p>
-              <div className='flex h-4 items-center justify-center rounded border border-white/40 px-1.5 text-sm'>HD</div>
+              <p className='font-semibold text-green-400'>
+                Збіг{'\u00A0'}
+                {movie!.vote_average * 10}%
+              </p>
+              <p className='font-light'>
+                {movie?.release_date || movie?.first_air_date}
+              </p>
+              <div className='flex h-4 items-center justify-center rounded border border-white/40 px-1.5 text-sm'>
+                HD
+              </div>
             </div>
-          </div>
 
-          {/* Overview */}
-          <div>
-            <p>{movie?.overview}</p>
+            {/* Overview */}
+            <div className='flex flex-col gap-x-10 gap-y-4 font-light md:flex-row'>
+              <p className='w-5/6'>{movie?.overview}</p>
+              <div className='flex flex-col space-y-3 text-sm'>
+                <div>
+                  <span className='text-[gray]'>Жарни:{'\u00A0'}</span>
+                  {genres.map((genre) => genre.name).join(', ')}
+                </div>
+
+                <div className='flex flex-row space-y-3 text-sm'>
+                  <span className='text-[gray]'>
+                    Оригінальна мова:{'\u00A0'}
+                  </span>
+                  {langs[movie?.original_language]}
+                </div>
+
+                <div className='flex flex-row space-y-3 text-sm'>
+                  <span className='text-[gray]'>Всього голосів:{'\u00A0'}</span>
+                  {movie?.vote_count}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </>
