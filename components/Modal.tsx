@@ -6,7 +6,6 @@ import { langs } from '../constants/lang';
 import { useEffect, useState } from 'react';
 import { Element, Genre, Movie } from '../typings';
 import ReactPlayer from 'react-player/lazy';
-import { toDate } from '../utils/datetodate';
 
 //Icons
 import CloseIcon from '@mui/icons-material/Close';
@@ -148,7 +147,6 @@ const Modal = () => {
               </p>
               <p className='font-light'>
                 {toDate(movie?.release_date || movie?.first_air_date)}
-                
               </p>
               <div className='flex h-4 items-center justify-center rounded border border-white/40 px-1.5 text-sm'>
                 HD
