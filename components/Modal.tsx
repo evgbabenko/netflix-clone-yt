@@ -24,16 +24,15 @@ const Modal = () => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [muted, setMuted] = useState(true);
 
-  const toDate = (date:string) => {
+  const toDate = (date: string) => {
     const newDate = new Date(date);
-    
+
     return newDate.toLocaleString('uk-UA', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
     });
-
-  }
+  };
 
   useEffect(() => {
     if (!movie) return;
@@ -67,9 +66,11 @@ const Modal = () => {
         const index = data.videos.results.findIndex(
           (element: Element) => element.type === 'Trailer' || 'Teaser'
         );
-        
-        (index === -1) ? setTrailer(youtube_no_thrailer) : setTrailer(data.videos?.results[index]?.key);
-      };
+
+        index === -1
+          ? setTrailer(youtube_no_thrailer)
+          : setTrailer(data.videos?.results[index]?.key);
+      }
 
       //if fetch data set genres
       if (data?.genres) {
@@ -152,20 +153,24 @@ const Modal = () => {
                 HD
               </div>
             </div>
+            
+            {/* movie title */}
+            {/*   <div className='font-bold'>
+                {movie?.title}
+            </div> */}
 
             {/* Overview */}
+
             <div className='flex flex-col gap-x-10 gap-y-4 font-light md:flex-row'>
-              <p className='w-4/6'>{movie?.overview}</p>
+              <p className='w-4/6 text-sm'>{movie?.overview}</p>
               <div className='flex flex-col space-y-3 text-sm'>
                 <div>
                   <span className='text-[gray]'>Жарни:{'\u00A0'}</span>
                   {genres.map((genre) => genre.name).join(', ')}
                 </div>
 
-                <div >
-                  <span className='text-[gray]'>
-                    Мова оригіналу:{'\u00A0'}
-                  </span>
+                <div>
+                  <span className='text-[gray]'>Мова оригіналу:{'\u00A0'}</span>
                   {toLang(movie?.original_language)}
                 </div>
 
