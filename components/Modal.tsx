@@ -21,7 +21,7 @@ const Modal = () => {
   const [data, setData] = useState();
   const [trailer, setTrailer] = useState('');
   const [genres, setGenres] = useState<Genre[]>([]);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   const toDate = (date:string) => {
     const newDate = new Date(date);
@@ -59,7 +59,6 @@ const Modal = () => {
         )
           .then((response) => response.json())
           .catch((error) => console.log(error.message));
-      
       setData(data);
 
       // if fetch data get trailer or teaser
@@ -67,9 +66,9 @@ const Modal = () => {
         const index = data.videos.results.findIndex(
           (element: Element) => element.type === 'Trailer' || 'Teaser'
         );
-
-        setTrailer(data.videos?.results[index]?.key);
-      }
+        
+        (index === -1) ? setTrailer('05DqIGS_koU') : setTrailer(data.videos?.results[index]?.key);
+      };
 
       //if fetch data set genres
       if (data?.genres) {

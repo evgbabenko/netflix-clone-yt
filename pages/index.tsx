@@ -20,6 +20,19 @@ interface Props {
   horrorMovies: Movie[];
   romanceMovies: Movie[];
   documentaries: Movie[];
+  adventureMovies: Movie[];
+  animations: Movie[];
+  crimeMovies: Movie[];
+  dramaMovies: Movie[];
+  familyMovies: Movie[];
+  fantasyMovies: Movie[];
+  historyMovies: Movie[];
+  music: Movie[];
+  mysteryMovies: Movie[];
+  scifiMovies: Movie[];
+  tvMovies: Movie[];
+  thrillerMovies: Movie[];
+  warMovies: Movie[];
 }
 
 const Home = ({
@@ -31,6 +44,19 @@ const Home = ({
   horrorMovies,
   romanceMovies,
   documentaries,
+  adventureMovies,
+  animations,
+  crimeMovies,
+  dramaMovies,
+  familyMovies,
+  fantasyMovies,
+  historyMovies,
+  music,
+  mysteryMovies,
+  scifiMovies,
+  tvMovies,
+  thrillerMovies,
+  warMovies,
 }: Props) => {
   const { logout, loading } = useAuth();
   const showModal = useRecoilValue(modalState);
@@ -58,13 +84,12 @@ const Home = ({
 
           <MovieSlider title='Комедії' movies={comedyMovies} />
           <MovieSlider title='Жахи' movies={horrorMovies} />
-          <MovieSlider title='Романтичні фільми' movies={romanceMovies} />
-          <MovieSlider title='Документальні' movies={documentaries} />
+          <MovieSlider title='Трилери' movies={thrillerMovies} />
+          <MovieSlider title='Кримінал' movies={crimeMovies} />
         </section>
       </main>
       {/* Modal */}
       {showModal && <Modal />}
-
     </div>
   );
 };
@@ -81,6 +106,19 @@ export const getServerSideProps = async () => {
     horrorMovies,
     romanceMovies,
     documentaries,
+    adventureMovies,
+    animations,
+    crimeMovies,
+    dramaMovies,
+    familyMovies,
+    fantasyMovies,
+    historyMovies,
+    music,
+    mysteryMovies,
+    scifiMovies,
+    tvMovies,
+    thrillerMovies,
+    warMovies,
   ] = await Promise.all([
     fetch(requests.fetchNetflixOriginals).then((res) => res.json()),
     fetch(requests.fetchTrending).then((res) => res.json()),
@@ -90,6 +128,20 @@ export const getServerSideProps = async () => {
     fetch(requests.fetchHorrorMovies).then((res) => res.json()),
     fetch(requests.fetchRomanceMovies).then((res) => res.json()),
     fetch(requests.fetchDocumentaries).then((res) => res.json()),
+    /* */
+    fetch(requests.fetchAdventure).then((res) => res.json()),
+    fetch(requests.fetchAnimation).then((res) => res.json()),
+    fetch(requests.fetchCrime).then((res) => res.json()),
+    fetch(requests.fetchDrama).then((res) => res.json()),
+    fetch(requests.fetchFamily).then((res) => res.json()),
+    fetch(requests.fetchFantasy).then((res) => res.json()),
+    fetch(requests.fetchHistory).then((res) => res.json()),
+    fetch(requests.fetchMusic).then((res) => res.json()),
+    fetch(requests.fetchMystery).then((res) => res.json()),
+    fetch(requests.fetchScienceFiction).then((res) => res.json()),
+    fetch(requests.fetchTVMovie).then((res) => res.json()),
+    fetch(requests.fetchThriller).then((res) => res.json()),
+    fetch(requests.fetchWar).then((res) => res.json()),
   ]);
 
   return {
@@ -102,6 +154,19 @@ export const getServerSideProps = async () => {
       horrorMovies: horrorMovies.results,
       romanceMovies: romanceMovies.results,
       documentaries: documentaries.results,
+      adventureMovies: adventureMovies.results,
+      animations: animations.results,
+      crimeMovies: crimeMovies.results,
+      dramaMovies: dramaMovies.results,
+      familyMovies: familyMovies.results,
+      fantasyMovies: fantasyMovies.results,
+      historyMovies: historyMovies.results,
+      music: music.results,
+      mysteryMovies: mysteryMovies.results,
+      scifiMovies: scifiMovies.results,
+      tvMovies: tvMovies.results,
+      thrillerMovies: thrillerMovies.results,
+      warMovies: warMovies.results,
     },
   };
 };
