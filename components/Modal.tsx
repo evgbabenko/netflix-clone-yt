@@ -1,7 +1,7 @@
 import MuiModal from '@mui/material/Modal';
 import { modalState, movieState } from '../atoms/modalAtom';
 import { useRecoilState } from 'recoil';
-import { langs } from '../constants/lang';
+import toLang from '../constants/lang';
 
 import { useEffect, useState } from 'react';
 import { Element, Genre, Movie } from '../typings';
@@ -59,7 +59,7 @@ const Modal = () => {
         )
           .then((response) => response.json())
           .catch((error) => console.log(error.message));
-      console.log(data);
+      
       setData(data);
 
       // if fetch data get trailer or teaser
@@ -155,21 +155,21 @@ const Modal = () => {
 
             {/* Overview */}
             <div className='flex flex-col gap-x-10 gap-y-4 font-light md:flex-row'>
-              <p className='w-5/6'>{movie?.overview}</p>
+              <p className='w-4/6'>{movie?.overview}</p>
               <div className='flex flex-col space-y-3 text-sm'>
                 <div>
                   <span className='text-[gray]'>Жарни:{'\u00A0'}</span>
                   {genres.map((genre) => genre.name).join(', ')}
                 </div>
 
-                <div className='flex flex-row space-y-3 text-sm'>
+                <div >
                   <span className='text-[gray]'>
-                    Оригінальна мова:{'\u00A0'}
+                    Мова оригіналу:{'\u00A0'}
                   </span>
-                  {langs[movie?.original_language]}
+                  {toLang(movie?.original_language)}
                 </div>
 
-                <div className='flex flex-row space-y-3 text-sm'>
+                <div>
                   <span className='text-[gray]'>Всього голосів:{'\u00A0'}</span>
                   {movie?.vote_count}
                 </div>
