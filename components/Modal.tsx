@@ -14,6 +14,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { youtube_no_thrailer } from '../constants/movie';
 
 const Modal = () => {
   const [showModal, setShowModal] = useRecoilState(modalState);
@@ -67,7 +68,7 @@ const Modal = () => {
           (element: Element) => element.type === 'Trailer' || 'Teaser'
         );
         
-        (index === -1) ? setTrailer('05DqIGS_koU') : setTrailer(data.videos?.results[index]?.key);
+        (index === -1) ? setTrailer(youtube_no_thrailer) : setTrailer(data.videos?.results[index]?.key);
       };
 
       //if fetch data set genres
