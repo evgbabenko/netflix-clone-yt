@@ -6,6 +6,7 @@ import { langs } from '../constants/lang';
 import { useEffect, useState } from 'react';
 import { Element, Genre, Movie } from '../typings';
 import ReactPlayer from 'react-player/lazy';
+import { toDate } from '../utils/datetodate';
 
 //Icons
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,6 +23,17 @@ const Modal = () => {
   const [trailer, setTrailer] = useState('');
   const [genres, setGenres] = useState<Genre[]>([]);
   const [muted, setMuted] = useState(false);
+
+  const toDate = (date:string) => {
+    const newDate = new Date(date);
+    
+    return newDate.toLocaleString('uk-UA', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+
+  }
 
   useEffect(() => {
     if (!movie) return;
@@ -135,7 +147,8 @@ const Modal = () => {
                 {movie!.vote_average * 10}%
               </p>
               <p className='font-light'>
-                {movie?.release_date || movie?.first_air_date}
+                {toDate(movie?.release_date || movie?.first_air_date)}
+                
               </p>
               <div className='flex h-4 items-center justify-center rounded border border-white/40 px-1.5 text-sm'>
                 HD
