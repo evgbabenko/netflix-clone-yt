@@ -6,6 +6,10 @@ import Hero from '../components/Hero';
 import requests from '../utils/requests';
 import { Movie } from '../typings';
 import MovieSlider from '../components/MovieSlider';
+import useAuth from '../hooks/useAuth';
+import { useRecoilValue } from 'recoil';
+import Modal from '../components/Modal';
+import { modalState } from '../atoms/modalAtom';
 
 interface Props {
   netflixOriginals: Movie[];
@@ -28,6 +32,12 @@ const Home = ({
   romanceMovies,
   documentaries,
 }: Props) => {
+  const { logout, loading } = useAuth();
+  const showModal = useRecoilValue(modalState);
+
+  if (loading)
+    return null
+
   return (
     <div className='relative h-screen lg:h-[140vh] w-full'>
       <Head>
@@ -52,6 +62,9 @@ const Home = ({
           <MovieSlider title='Документальні' movies={documentaries} />
         </section>
       </main>
+      {/* Modal */}
+      {showModal && <Modal />}
+
     </div>
   );
 };

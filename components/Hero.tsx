@@ -2,7 +2,11 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Movie } from '../typings';
 import { baseUrl } from '../constants/movie';
-import { HiPlay } from 'react-icons/hi';
+import { useRecoilState } from 'recoil';
+import { modalState, movieState } from '../atoms/modalAtom';
+
+//icons
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { ImInfo } from 'react-icons/im';
 
 interface Props {
@@ -11,6 +15,9 @@ interface Props {
 
 const Hero = ({ trendingNow }: Props) => {
   const [movie, setMovie] = useState<Movie | null>(null);
+  const [showModal, setShowModal] = useRecoilState(modalState);
+  const [currentMovie, setCurrentMovie] = useRecoilState(movieState);
+
   useEffect(() => {
     setMovie(trendingNow[Math.floor(Math.random() * trendingNow.length)]);
   }, [trendingNow]);
@@ -35,10 +42,16 @@ const Hero = ({ trendingNow }: Props) => {
       </div>
       <div className='flex flex-row space-x-3'>
         <button className='bannerButton bg-white text-black'>
-          <HiPlay className='h-4 w-4 text-black md:h-7 md:w-7' />
+          <PlayArrowIcon className='h-4 w-4 text-black md:h-7 md:w-7' />
           Переглянути
         </button>
-        <button className='bannerButton bg-[gray]/70'>
+        <button
+          className='bannerButton bg-[gray]/70'
+          onClick={() => {
+            setCurrentMovie(movie);
+            setShowModal(true);
+          }}
+        >
           <ImInfo className='h-4 w-4 md:h-6 md:w-6' />
           Докладніше
         </button>
