@@ -116,8 +116,9 @@ const Modal = () => {
           />
           <div className='absolute bottom-10 flex w-full items-center justify-between px-10'>
             <div className='flex space-x-2'>
-              <button className='flex items-center justify-center gap-x-2 rounded bg-white px-8 text-xl text-black transition hover:bg-[#e6e6e6]  opacity-40 tranform hover:opacity-100 duration-300'>
-                <PlayArrowIcon className='h-7 w-7 text-black' /> Переглянути
+              <button className='flex items-center justify-center gap-x-2 rounded bg-white px-4 sm:px-8 text-xl text-black transition hover:bg-[#e6e6e6] opacity-40 tranform hover:opacity-100 duration-300'>
+                <PlayArrowIcon className='h-7 w-7 text-black' />{' '}
+                <span className='hidden sm:block'>Переглянути</span>
               </button>
 
               <button className='modalButton  opacity-40 tranform hover:opacity-100 duration-300'>
@@ -139,12 +140,12 @@ const Modal = () => {
           </div>
         </div>
         {/* Bottom section - description, etc.*/}
-        <div className='flex flex-col space-x-16 rounded-b-md bg-[#181818] px-10 py-8'>
+        <div className='flex flex-col space-x-16 rounded-b-md bg-[#181818] px-5 py-4 md:px-10 md:py-8'>
           <div className='space-y-6 text-lg'>
             <div className='flex items-center space-x-2 text-sm'>
               <p className='font-semibold text-green-400'>
                 Збіг{'\u00A0'}
-                {movie!.vote_average * 10}%
+                {Math.round((movie!.vote_average * 100) / 10)}%
               </p>
               <p className='font-light'>
                 {toDate(movie?.release_date || movie?.first_air_date)}
@@ -153,7 +154,7 @@ const Modal = () => {
                 HD
               </div>
             </div>
-            
+
             {/* movie title */}
             {/*   <div className='font-bold'>
                 {movie?.title}
