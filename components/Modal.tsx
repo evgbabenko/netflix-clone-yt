@@ -88,7 +88,7 @@ const Modal = () => {
     <MuiModal
       open={showModal}
       onClose={handleClose}
-      className='fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide ' /* bg-black p-1 */
+      className='fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide  ' /* bg-black p-1 */
     >
       <>
         {/* Close Button */}
@@ -100,9 +100,10 @@ const Modal = () => {
         </button>
 
         {/* Movie player */}
-        <div className='relative pt-[56.25%]'>
+        <div className='relative pt-[56.25%] overflow-hidden'>
           <ReactPlayer
             url={`https://youtube.com/watch?v=${trailer}`}
+            config={{ youtube: { playerVars: { showinfo: 0 } } }}
             width='100%'
             height='100%'
             style={{
@@ -163,7 +164,7 @@ const Modal = () => {
             {/* Overview */}
 
             <div className='flex flex-col gap-x-10 gap-y-4 font-light md:flex-row'>
-              <p className='w-4/6 text-sm'>{movie?.overview}</p>
+              <p className='w-5/6 text-sm'>{movie?.overview}</p>
               <div className='flex flex-col space-y-3 text-sm'>
                 <div>
                   <span className='text-[gray]'>Жарни:{'\u00A0'}</span>

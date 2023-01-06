@@ -77,11 +77,12 @@ const Home = ({
         <section className='md:space-y-24'>
           <MovieSlider title='Актуальне' movies={trendingNow} />
           <MovieSlider title='Популярне зараз' movies={topRated} />
-          <MovieSlider title='Тільки на Netflix' movies={netflixOriginals} />
+          <MovieSlider title='Анімація' movies={animations} />
           <MovieSlider title='Бойовики' movies={actionMovies} />
-
+          <MovieSlider title='Історичні' movies={historyMovies} />
           {/*  My List  */}
 
+          <MovieSlider title='Військові' movies={warMovies} />
           <MovieSlider title='Комедії' movies={comedyMovies} />
           <MovieSlider title='Жахи' movies={horrorMovies} />
           <MovieSlider title='Трилери' movies={thrillerMovies} />
