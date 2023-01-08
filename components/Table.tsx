@@ -8,7 +8,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 interface Props {
   plans: Product[];
-  selectedPlan: Product,
+  selectedPlan: Product | null,
 }
 
 const Table = ({ plans, selectedPlan }: Props) => {
@@ -22,7 +22,7 @@ const Table = ({ plans, selectedPlan }: Props) => {
           {plans.map((plan) => (
             <td key={`${plan.id}-plan-${plan.id}`}
               className={`tableDataFeature 
-              ${selectedPlan.id === plan.id
+              ${selectedPlan?.id === plan.id
                   ? 'text-[var(--color-red)]'
                   : 'text-[gray]'}`}>
               {plan.prices[0].unit_amount! / 100} грн.
@@ -37,7 +37,7 @@ const Table = ({ plans, selectedPlan }: Props) => {
             <td
               key={`${plan.id}-resolution-${plan.id}`}
               className={`tableDataFeature 
-              ${selectedPlan.id === plan.id
+              ${selectedPlan?.id === plan.id
                   ? 'text-[var(--color-red)]'
                   : 'text-[gray]'}`}
             >
@@ -53,7 +53,7 @@ const Table = ({ plans, selectedPlan }: Props) => {
             <td
               key={`${plan.id}-videoQuality-${plan.id}`}
               className={`tableDataFeature 
-              ${selectedPlan.id === plan.id
+              ${selectedPlan?.id === plan.id
                   ? 'text-[var(--color-red)]'
                   : 'text-[gray]'}`}
             >
@@ -69,7 +69,7 @@ const Table = ({ plans, selectedPlan }: Props) => {
             <td
               key={`${plan.id}-totalMovie-${plan.id}`}
               className={`tableDataFeature 
-              ${selectedPlan.id === plan.id
+              ${selectedPlan?.id === plan.id
                   ? 'text-[var(--color-red)]'
                   : 'text-[gray]'}`}
             >
@@ -85,7 +85,7 @@ const Table = ({ plans, selectedPlan }: Props) => {
             <td
               key={`${plan.id}-tvSeries-${plan.id}`}
               className={`tableDataFeature 
-              ${selectedPlan.id === plan.id
+              ${selectedPlan?.id === plan.id
                   ? 'text-[var(--color-red)]'
                   : 'text-[gray]'}`}
             >
