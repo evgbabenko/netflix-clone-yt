@@ -9,11 +9,12 @@ import MovieSlider from '../components/MovieSlider';
 import useAuth from '../hooks/useAuth';
 import { useRecoilValue } from 'recoil';
 import Modal from '../components/Modal';
-import { modalState } from '../atoms/modalAtom';
+import { modalState, movieState } from '../atoms/modalAtom';
 import Plans from '../components/Plans';
 import { Product, getProducts } from '@stripe/firestore-stripe-payments';
 import payments from '../lib/stripe';
 import useSubscription from '../hooks/useSubscription';
+import useList from '../hooks/useList';
 
 interface Props {
   netflixOriginals: Movie[];
@@ -64,17 +65,16 @@ const Home = ({
   warMovies,
   plans,
 }: Props) => {
-
-  const { logout, loading, user } = useAuth();
-
+  const { loading, user } = useAuth();
   const showModal = useRecoilValue(modalState);
-
-  //check subscription *Custom Hook*
+  // fetch user list from db
+  const list = useList(user?.uid);
+  //check subscription
   const subscription = useSubscription(user);
 
   if (loading || subscription === null) return null;
-
-  if (!subscription) return <Plans plans={plans}/>;
+  if (!subscription) return <Plans plans={plans} />;
+  
 
   return (
     <div className='relative h-screen lg:h-[140vh] w-full'>
@@ -88,15 +88,17 @@ const Home = ({
 
         <section className='md:space-y-24'>
           <MovieSlider title='Актуальне' movies={trendingNow} />
+          <MovieSlider title='Комедії' movies={comedyMovies} />
+          {/*  My List  */}
+          {list.length > 0 && <MovieSlider title='Мій список' movies={list} />}
+
           <MovieSlider title='Популярне зараз' movies={topRated} />
           <MovieSlider title='Анімація' movies={animations} />
           <MovieSlider title='Бойовики' movies={actionMovies} />
           <MovieSlider title='Історичні' movies={historyMovies} />
 
-          {/*  My List  */}
-
           <MovieSlider title='Військові' movies={warMovies} />
-          <MovieSlider title='Комедії' movies={comedyMovies} />
+
           <MovieSlider title='Жахи' movies={horrorMovies} />
           <MovieSlider title='Трилери' movies={thrillerMovies} />
           <MovieSlider title='Кримінал' movies={crimeMovies} />

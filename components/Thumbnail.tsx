@@ -4,6 +4,7 @@ import { thumbnailUrl } from '../constants/movie';
 import { useRecoilState } from 'recoil';
 import { modalState, movieState } from '../atoms/modalAtom';
 import { DocumentData } from 'firebase/firestore';
+import Loader from './Loader';
 
 interface Props {
    movie: Movie | DocumentData,
@@ -26,6 +27,7 @@ const Thumbnail = ({ movie }: Props) => {
         alt=''
         fill
         className='rounded-sm object-cover md:rounded'
+
       />
     </div>
   );

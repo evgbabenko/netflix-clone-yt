@@ -175,9 +175,15 @@ const Modal = () => {
             }}
             playing={playing}
             muted={muted}
-            onEnded={() => setPlaying(false)}
-            onPause={() => setPlaying(false)}
-            onPlay={() => setPlaying(true)}
+            onEnded={() => 
+              setPlaying(false)
+            }
+            onPause={() => 
+              setPlaying(false)
+            }
+            onPlay={() =>
+              setPlaying(true)
+            }
           />
           <div className='absolute bottom-10 flex w-full items-center justify-between px-10'>
             <div className='flex space-x-2'>

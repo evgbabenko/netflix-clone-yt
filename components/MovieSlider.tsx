@@ -2,12 +2,12 @@ import { Movie } from '../typings';
 import { useRef, useState } from 'react';
 import Thumbnail from './Thumbnail';
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs';
+import { DocumentData } from 'firebase/firestore';
 
 interface Props {
   title: string;
-  movies: Movie[];
   //When using firebase
-  //movie: Movie | DocumentData
+  movies: DocumentData[] | Movie[];
 }
 
 const MovieSlider = ({ title, movies }: Props) => {

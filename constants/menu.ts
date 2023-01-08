@@ -22,6 +22,6 @@ export const navLink = [
   {
     id: 4,
     title: 'Мій список',
-    navlink: '/#'
+    navlink: '/mylist'
   }
 ]
