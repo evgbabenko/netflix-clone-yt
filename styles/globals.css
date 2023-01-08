@@ -6,6 +6,7 @@
 @layer base{
   :root{
     --main-bg-color: #141414;
+    --main-bg-color-opacity: rgba(20, 20, 20, .7);
     --modal-bg-color: #181818;
 
     /*Global colors*/
@@ -47,8 +48,8 @@
   }
 
   .modalButton{
-    @apply flex h-11 w-11 items-center justify-center rounded-full border border-[gray] bg-[#2a2a2a]/60 transition hover:border-white 
-     hover:bg-[var(--modal-bg-color)] ;
+    @apply flex h-11 w-11 items-center justify-center rounded-full border border-[gray] bg-[#2a2a2a]/60  hover:border-white  
+    hover:bg-[var(--main-bg-color-opacity)] transition duration-300;
   }
 
 
@@ -70,5 +71,33 @@
       @apply w-[calc(100%/3)] p-2.5 text-center font-light text-sm md:w-[calc(60%/3)] md:p-3.5 transform duration-700;
     }
 
+    .accountContainer{
+      @apply mt-6 grid grid-cols-1 gap-x-4 border px-4 py-2 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0
+    }
 
+    .resolution{
+     @apply flex h-4 items-center justify-center rounded border border-white/40 px-1.5 text-sm
+    }
+
+    .membershipLink{
+      @apply text-[var(--color-red)] cursor-pointer hover:underline
+    }
+
+    /* MUI Menu */
+    .menu {
+      @apply md:hidden;
+    }
+    
+    .menu .MuiPaper-root {
+    @apply !absolute !left-0 !rounded-none !border !border-[gray] !bg-black !text-white;
+    }
+    
+    .menu .MuiList-root {
+       @apply !p-0;
+    }
+    
+    .menu .MuiMenuItem-root {
+      @apply !block !w-64 !py-3.5 !text-center !text-sm !font-light !text-[#b3b3b3] !transition !duration-200 first:cursor-default first:!font-normal first:!text-white hover:!bg-[#11100F];
+      }
+         
 }

@@ -7,21 +7,21 @@ export const navLink = [
   {
     id: 1,
     title: 'Серіали',
-    navlink: '/series'
+    navlink: '/#'
   },
   {
     id: 2,
     title: 'Фільми',
-    navlink: ''
+    navlink: '/#'
   },
   {
     id: 3,
     title: 'Нове та популярне',
-    navlink: ''
+    navlink: '/#'
   },
   {
     id: 4,
     title: 'Мій список',
-    navlink: ''
+    navlink: '/#'
   }
 ]

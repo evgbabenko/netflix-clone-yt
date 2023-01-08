@@ -7,6 +7,8 @@ import { ads_plans } from '../constants/plans';
 import { Product } from '@stripe/firestore-stripe-payments';
 import Table from './Table';
 import { useState } from 'react';
+import Loader from './Loader';
+import { loadCheckout } from '../lib/stripe';
 
 interface Props{
   plans: Product[],
@@ -14,8 +16,17 @@ interface Props{
 }
 
 const Plans = ( {plans} : Props) => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const [selectedPlan, setSelectedPlan] = useState<Product | null>(plans[2]);
+  const [isBillingLoading, setIsBillingLoading] = useState(false);
+
+  const subscribeToPlan = () => {
+    if (!user) return
+
+    loadCheckout(selectedPlan?.prices[0].id!)
+    setIsBillingLoading(true);
+
+  }
 
   return (
     <div>
@@ -76,17 +87,15 @@ const Plans = ( {plans} : Props) => {
           <Table plans={plans} selectedPlan={selectedPlan}  />
 
           { <button
-             /* disabled={!selectedPlan || isBillingLoading}  */
-            className={`mx-auto w-11/12 rounded bg-[var(--color-red)] py-4 text-xl shadow hover:bg-[#f6121d] md:w-[420px] ${
-               /* isBillingLoading   && */'opacity-60'
-            }`}
-            /* onClick={subscribeToPlan} */
+              disabled={!selectedPlan || isBillingLoading}  
+            className={`mx-auto w-11/12 rounded bg-[var(--color-red)] py-4 text-xl shadow hover:bg-[#f6121d] md:w-[420px] ${isBillingLoading && 'opacity-60'}`}
+             onClick={subscribeToPlan} 
           >
-            {/* {isBillingLoading ? (
-              <Loader color='dark:fill-gray-300' />
-            ) : ( */}
+             {isBillingLoading ? (
+              <Loader />
+            ) : ( 
               'Підключити'
-            {/* )} */}
+             )} 
           </button> }
         </div>
       </main>

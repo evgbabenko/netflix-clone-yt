@@ -11,7 +11,8 @@ import { getAuth } from 'firebase/auth';
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const API_KEY = process.env.NEXT_GOOGLE_API_KEY;
 const firebaseConfig = {
-  apiKey: API_KEY,
+  /* apiKey: API_KEY, */
+  apiKey: 'AIzaSyCGJnjDTaM7zDyH3dBbRuDTaI8L_0r80OE',
   authDomain: 'moovie-e184a.firebaseapp.com',
   projectId: 'moovie-e184a',
   storageBucket: 'moovie-e184a.appspot.com',

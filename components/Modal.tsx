@@ -2,11 +2,11 @@ import MuiModal from '@mui/material/Modal';
 import { modalState, movieState } from '../atoms/modalAtom';
 import { useRecoilState } from 'recoil';
 import toLang from '../constants/lang';
-
+import { toDate } from '../utils/customFuns';
 import { useEffect, useState } from 'react';
 import { Element, Genre, Movie } from '../typings';
 import ReactPlayer from 'react-player/lazy';
-
+import { youtube_no_thrailer } from '../constants/movie';
 //Icons
 import CloseIcon from '@mui/icons-material/Close';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -14,7 +14,13 @@ import AddIcon from '@mui/icons-material/Add';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import { youtube_no_thrailer } from '../constants/movie';
+import PauseIcon from '@mui/icons-material/Pause';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+
+import { DocumentData, collection, deleteDoc, doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import useAuth from '../hooks/useAuth';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Modal = () => {
   const [showModal, setShowModal] = useRecoilState(modalState);
@@ -22,17 +28,11 @@ const Modal = () => {
   const [data, setData] = useState();
   const [trailer, setTrailer] = useState('');
   const [genres, setGenres] = useState<Genre[]>([]);
-  const [muted, setMuted] = useState(true);
-
-  const toDate = (date: string) => {
-    const newDate = new Date(date);
-
-    return newDate.toLocaleString('uk-UA', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-  };
+  const [muted, setMuted] = useState(false);
+  const [playing, setPlaying] = useState(true);
+  const [addedToList, setAddedToList] = useState(false);
+  const { user } = useAuth();
+  const [movies, setMovies] = useState<DocumentData[] | Movie[]>([]);
 
   useEffect(() => {
     if (!movie) return;
@@ -71,12 +71,12 @@ const Modal = () => {
           if (data?.videos) {
             index = data.videos.results.findIndex(
               (element: Element) => element.type === 'Teaser'
-            )
+            );
           }
         }
-        (index === -1)
-        //if no treiler or teaser set 'Comming Soon'
-          ? setTrailer(youtube_no_thrailer)
+        index === -1
+          ? //if no treiler or teaser set 'Comming Soon'
+            setTrailer(youtube_no_thrailer)
           : setTrailer(data.videos?.results[index]?.key);
       }
 
@@ -89,8 +89,60 @@ const Modal = () => {
     fetchMovie();
   }, [movie]);
 
+  // Find all movies in the user list
+  useEffect(() => {
+    if (user) {
+      return onSnapshot(
+        collection(db, 'customers', user.uid, 'myList'),
+        (snapshot) => setMovies(snapshot.docs)
+      );
+    }
+  }, [db, movie?.id]);
+
+  // Check if the movie is already in the user list
+  useEffect(
+    () =>
+      setAddedToList(
+        movies.findIndex((result) => result.data().id === movie?.id) !== -1
+      ),
+    [movies]
+  );
+
   const handleClose = () => {
     setShowModal(false);
+  };
+
+  const handleList = async () => {
+    if (addedToList) {
+      await deleteDoc(
+        doc(db, 'customers', user!.uid, 'myList', movie?.id.toString()!)
+      );
+      toast.error(
+        `${
+          movie?.title || movie?.original_title || movie?.name
+        } був видалений з вашого списку`,
+        {
+          duration: 4000,
+        }
+      );
+    } else {
+      await setDoc(
+        doc(db, 'customers', user!.uid, 'myList', movie?.id.toString()!),
+        { ...movie }
+      );
+      toast.success(
+        `${
+          movie?.title || movie?.original_title || movie?.name
+        } був додано до вашого списку`,
+        {
+          duration: 4000,
+        }
+      );
+    }
+  };
+
+  const handlePlay = () => {
+    setPlaying(!playing);
   };
   return (
     <MuiModal
@@ -99,6 +151,7 @@ const Modal = () => {
       className='fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide  ' /* bg-black p-1 */
     >
       <>
+        <Toaster position='bottom-center' />
         {/* Close Button */}
         <button
           onClick={handleClose}
@@ -120,21 +173,43 @@ const Modal = () => {
               left: 0,
               background: 'var(--modal-bg-color)',
             }}
-            playing
+            playing={playing}
             muted={muted}
+            onEnded={() => setPlaying(false)}
+            onPause={() => setPlaying(false)}
+            onPlay={() => setPlaying(true)}
           />
           <div className='absolute bottom-10 flex w-full items-center justify-between px-10'>
             <div className='flex space-x-2'>
-              <button className='flex items-center justify-center gap-x-2 rounded bg-white px-4 sm:px-8 text-xl text-black transition hover:bg-[#e6e6e6] opacity-40 tranform hover:opacity-100 duration-300'>
-                <PlayArrowIcon className='h-7 w-7 text-black' />{' '}
-                <span className='hidden sm:block'>Переглянути</span>
+              <button
+                className='flex items-center justify-center gap-x-2 rounded bg-white px-4 sm:px-8 text-xl text-black transition hover:bg-[#e6e6e6] opacity-40 tranform hover:opacity-100 duration-300'
+                onClick={handlePlay}
+              >
+                {playing ? (
+                  <>
+                    <PauseIcon className='h-7 w-7 text-black' />{' '}
+                    <span className='hidden sm:block'>Призупинити</span>
+                  </>
+                ) : (
+                  <>
+                    <PlayArrowIcon className='h-7 w-7 text-black' />{' '}
+                    <span className='hidden sm:block'>Переглянути</span>
+                  </>
+                )}
               </button>
 
-              <button className='modalButton  opacity-40 tranform hover:opacity-100 duration-300'>
-                <AddIcon className='h-7 w-7 transition hover:text-red-600' />
+              <button
+                className='modalButton'
+                onClick={handleList}
+              >
+                {addedToList ? (
+                  <PlaylistAddCheckIcon className='h-7 w-7 transition text-red-600' />
+                ) : (
+                  <AddIcon className='h-7 w-7 transition hover:text-red-600' />
+                )}
               </button>
 
-              <button className='modalButton  opacity-40 tranform hover:opacity-100 duration-300'>
+              <button className='modalButton'>
                 <ThumbUpOffAltIcon className='h-7 w-7 transition hover:text-red-600' />
               </button>
             </div>
@@ -159,9 +234,7 @@ const Modal = () => {
               <p className='font-light'>
                 {toDate(movie?.release_date || movie?.first_air_date)}
               </p>
-              <div className='flex h-4 items-center justify-center rounded border border-white/40 px-1.5 text-sm'>
-                HD
-              </div>
+              <div className='resolution'>HD</div>
             </div>
 
             {/* movie title */}
