@@ -3,13 +3,14 @@ import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyCGJnjDTaM7zDyH3dBbRuDTaI8L_0r80OE',
+  apiKey: `${process.env.NEXT_GOOGLE_API_KEY}`,
   authDomain: 'moovie-e184a.firebaseapp.com',
   projectId: 'moovie-e184a',
   storageBucket: 'moovie-e184a.appspot.com',
