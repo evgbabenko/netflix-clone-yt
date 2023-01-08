@@ -10,6 +10,9 @@ import useAuth from '../hooks/useAuth';
 import { useRecoilValue } from 'recoil';
 import Modal from '../components/Modal';
 import { modalState } from '../atoms/modalAtom';
+import Plans from '../components/Plans';
+import { Product, getProducts } from '@stripe/firestore-stripe-payments';
+import payments from '../lib/stripe';
 
 interface Props {
   netflixOriginals: Movie[];
@@ -33,6 +36,7 @@ interface Props {
   tvMovies: Movie[];
   thrillerMovies: Movie[];
   warMovies: Movie[];
+  plans: Product[];
 }
 
 const Home = ({
@@ -57,12 +61,19 @@ const Home = ({
   tvMovies,
   thrillerMovies,
   warMovies,
+  plans,
 }: Props) => {
+
   const { logout, loading } = useAuth();
+
   const showModal = useRecoilValue(modalState);
 
-  if (loading)
-    return null
+  //check subscription *Custom Hook*
+  const subscription = false;
+
+  if (loading || subscription === null) return null;
+
+  if (!subscription) return <Plans plans={plans}/>;
 
   return (
     <div className='relative h-screen lg:h-[140vh] w-full'>
@@ -80,6 +91,7 @@ const Home = ({
           <MovieSlider title='Анімація' movies={animations} />
           <MovieSlider title='Бойовики' movies={actionMovies} />
           <MovieSlider title='Історичні' movies={historyMovies} />
+
           {/*  My List  */}
 
           <MovieSlider title='Військові' movies={warMovies} />
@@ -98,6 +110,13 @@ const Home = ({
 export default Home;
 
 export const getServerSideProps = async () => {
+  const plans = await getProducts(payments, {
+    includePrices: true,
+    activeOnly: true,
+  })
+    .then((res) => res)
+    .catch((error) => console.log(error.message));
+
   const [
     netflixOriginals,
     trendingNow,
@@ -168,6 +187,7 @@ export const getServerSideProps = async () => {
       tvMovies: tvMovies.results,
       thrillerMovies: thrillerMovies.results,
       warMovies: warMovies.results,
+      plans,
     },
   };
 };

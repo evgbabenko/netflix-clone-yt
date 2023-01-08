@@ -63,11 +63,19 @@ const Modal = () => {
 
       // if fetch data get trailer or teaser
       if (data?.videos) {
-        const index = data.videos.results.findIndex(
-          (element: Element) => element.type === 'Trailer' || 'Teaser'
+        let index = data.videos.results.findIndex(
+          (element: Element) => element.type === 'Trailer'
         );
-
-        index === -1
+        // if no trailer, then search teaser
+        if (index === -1) {
+          if (data?.videos) {
+            index = data.videos.results.findIndex(
+              (element: Element) => element.type === 'Teaser'
+            )
+          }
+        }
+        (index === -1)
+        //if no treiler or teaser set 'Comming Soon'
           ? setTrailer(youtube_no_thrailer)
           : setTrailer(data.videos?.results[index]?.key);
       }
@@ -94,7 +102,7 @@ const Modal = () => {
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className='modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-none bg-[#181818]'
+          className='modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-none bg-[var(--modal-bg-color)]'
         >
           <CloseIcon className='h-6 w-6' />
         </button>
@@ -110,7 +118,7 @@ const Modal = () => {
               position: 'absolute',
               top: 0,
               left: 0,
-              background: '#181818',
+              background: 'var(--modal-bg-color)',
             }}
             playing
             muted={muted}
@@ -141,7 +149,7 @@ const Modal = () => {
           </div>
         </div>
         {/* Bottom section - description, etc.*/}
-        <div className='flex flex-col space-x-16 rounded-b-md bg-[#181818] px-5 py-4 md:px-10 md:py-8'>
+        <div className='flex flex-col space-x-16 rounded-b-md bg-[var(--modal-bg-color)] px-5 py-4 md:px-10 md:py-8'>
           <div className='space-y-6 text-lg'>
             <div className='flex items-center space-x-2 text-sm'>
               <p className='font-semibold text-green-400'>

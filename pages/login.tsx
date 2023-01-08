@@ -66,7 +66,7 @@ const login = () => {
               className='input'
             />
             {errors.email && (
-              <span className='text-[#e50914] text-[13px]'>
+              <span className='text-[var(--color-red)] text-[13px]'>
                 Будь ласка, введіть корректний email
               </span>
             )}
@@ -79,7 +79,7 @@ const login = () => {
               className='input'
             />
             {errors.password && (
-              <span className='text-[#e50914] text-[13px]'>
+              <span className='text-[var(--color-red)] text-[13px]'>
                 Це поле є обов'язковим
               </span>
             )}
@@ -87,7 +87,7 @@ const login = () => {
         </div>
 
         <button
-          className='w-full rounded bg-[#e50914] py-3 font-semibold'
+          className='w-full rounded bg-[var(--color-red)] py-3 font-semibold'
           onClick={() => setLogin(true)}
         >
           Вхід
